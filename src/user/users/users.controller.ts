@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { UserDto } from '../dto/user.dto';
+import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { User } from '../schema/user.schema';
 import { UsersService } from '../service/users/users.service';
 
 @Controller('users')
@@ -7,11 +7,17 @@ export class UsersController {
   constructor(private userService: UsersService) {}
 
   @Post('/')
-  create(@Body() user: UserDto): Promise<UserDto> {
-    return this.userService.create(user);
+  async create(@Res() response, @Body() user: User): Promise<User> {
+    const newUser = await this.userService.create(user);
+    return response.status(HttpStatus.CREATED).json({
+      newUser,
+    });
   }
   @Get('/')
-  findAll(): Promise<UserDto[]> {
-    return this.userService.findAll();
+  async findAll(@Res() response): Promise<User[]> {
+    const users = await this.userService.findAll();
+    return response.status(HttpStatus.OK).json({
+      users,
+    });
   }
 }
