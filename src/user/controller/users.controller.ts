@@ -1,4 +1,14 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Res,
+} from '@nestjs/common';
 import { User } from '../schema/user.schema';
 import { UsersService } from '../service/users/users.service';
 
@@ -18,6 +28,28 @@ export class UsersController {
     const users = await this.userService.findAll();
     return response.status(HttpStatus.OK).json({
       users,
+    });
+  }
+  @Get('/:id')
+  async findById(@Res() response, @Param('id') id) {
+    const user = await this.userService.readById(id);
+    return response.status(HttpStatus.OK).json({
+      user,
+    });
+  }
+  @Put('/:id')
+  async update(@Res() response, @Param('id') id, @Body() product: User) {
+    const updateduser = await this.userService.update(id, product);
+    return response.status(HttpStatus.OK).json({
+      updateduser,
+    });
+  }
+
+  @Delete('/:id')
+  async delete(@Res() response, @Param('id') id) {
+    const deleteduser = await this.userService.delete(id);
+    return response.status(HttpStatus.OK).json({
+      deleteduser,
     });
   }
 }
