@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -11,6 +12,7 @@ import { UserModule } from './user/user.module';
     MongooseModule.forRoot(
       'mongodb+srv://super:superuser@cluster0.baefv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
     ),
+    AuthModule,
     UserModule,
   ],
   controllers: [AppController],
